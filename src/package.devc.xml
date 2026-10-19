@@ -3,7 +3,7 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <DEVC>
-    <DEVCLASS>ZTOM_AI</DEVCLASS>
+    <DEVCLASS>ZTOM_AI2</DEVCLASS>
     <CTEXT>Coverage - LME Price RAP Application</CTEXT>
    </DEVC>
   </asx:values>
