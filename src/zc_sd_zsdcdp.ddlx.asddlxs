@@ -1,0 +1,180 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Price Condition',
+    typeNamePlural: 'Price Conditions',
+    title: { type: #STANDARD, value: 'CoverageID' },
+    description: { type: #STANDARD, value: 'SalesOrder' }
+  },
+  presentationVariant: [{
+    sortOrder: [{ by: 'CreatedAt', direction: #DESC }],
+    visualizations: [{ type: #AS_LINEITEM }]
+  }]
+}
+annotate view ZC_SD_ZSDCDP with
+{
+  @UI.facet: [
+    {
+      id: 'HeaderStatus',
+      purpose: #HEADER,
+      type: #DATAPOINT_REFERENCE,
+      targetQualifier: 'StatusDataPoint',
+      position: 10
+    },
+    {
+      id: 'GeneralInfo',
+      purpose: #STANDARD,
+      type: #COLLECTION,
+      label: 'General Information',
+      position: 10
+    },
+    {
+      id: 'GeneralGroupRef',
+      purpose: #STANDARD,
+      type: #FIELDGROUP_REFERENCE,
+      parentId: 'GeneralInfo',
+      label: 'Document Details',
+      targetQualifier: 'GeneralGroup',
+      position: 10
+    },
+    {
+      id: 'ConditionGroupRef',
+      purpose: #STANDARD,
+      type: #FIELDGROUP_REFERENCE,
+      parentId: 'GeneralInfo',
+      label: 'Condition Price Details',
+      targetQualifier: 'ConditionGroup',
+      position: 20
+    },
+    {
+      id: 'ConditionItemsRef',
+      purpose: #STANDARD,
+      type: #LINEITEM_REFERENCE,
+      label: 'Condition Items',
+      targetElement: '_Item',
+      position: 20
+    },
+    {
+      id: 'AdminInfo',
+      purpose: #STANDARD,
+      type: #FIELDGROUP_REFERENCE,
+      label: 'Administrative Data',
+      targetQualifier: 'AdminGroup',
+      position: 30
+    }
+  ]
+
+  @UI.hidden: true
+  CoverageUUID;
+
+  @UI: {
+    lineItem: [
+      { position: 5, importance: #HIGH, label: 'Doc #' },
+      { type: #FOR_ACTION, dataAction: 'createPriceConditionAndUpdate', label: 'Create & Update SO', position: 1 }
+    ],
+    identification: [
+      { position: 5, label: 'Coverage Doc #' },
+      { type: #FOR_ACTION, dataAction: 'createPriceConditionAndUpdate', label: 'Create & Update SO', position: 1 }
+    ],
+    fieldGroup: [{ qualifier: 'GeneralGroup', position: 5, label: 'Coverage Doc #' }]
+  }
+  @EndUserText.label: 'Coverage ID'
+  CoverageID;
+
+  @UI: {
+    lineItem: [{ position: 10, importance: #HIGH, label: 'Sale Order' }],
+    selectionField: [{ position: 10 }],
+    fieldGroup: [{ qualifier: 'GeneralGroup', position: 10, label: 'Sale Order' }]
+  }
+  @EndUserText.label: 'Sale Order'
+  SalesOrder;
+
+  @UI: {
+    lineItem: [{ position: 20, importance: #HIGH, label: 'Sale Order Item' }],
+    selectionField: [{ position: 20 }],
+    fieldGroup: [{ qualifier: 'GeneralGroup', position: 20, label: 'Sale Order Item (From Delivery)' }]
+  }
+  @EndUserText.label: 'Sale Order Item'
+  SalesOrderItem;
+
+  @UI: {
+    fieldGroup: [{ qualifier: 'GeneralGroup', position: 30, label: 'Document Date' }]
+  }
+  @EndUserText.label: 'Document Date'
+  DocumentDate;
+
+  @UI: {
+    fieldGroup: [{ qualifier: 'GeneralGroup', position: 40, label: 'Posting Date' }]
+  }
+  @EndUserText.label: 'Posting Date'
+  PostingDate;
+
+  @UI: {
+    fieldGroup: [{ qualifier: 'GeneralGroup', position: 50, label: 'Customer Name' }]
+  }
+  @EndUserText.label: 'Customer Name'
+  CustomerName;
+
+  @UI: {
+    fieldGroup: [{ qualifier: 'GeneralGroup', position: 60, label: 'Delivery Doc' }]
+  }
+  @EndUserText.label: 'Delivery Doc'
+  DeliveryDocument;
+
+  @UI: {
+    lineItem: [{ position: 30, importance: #HIGH, label: 'Condition Price Code' }],
+    selectionField: [{ position: 30 }],
+    fieldGroup: [{ qualifier: 'ConditionGroup', position: 10, label: 'Condition Price Code' }]
+  }
+  @EndUserText.label: 'Condition Price Code'
+  ConditionCode;
+
+  @UI: {
+    lineItem: [{ position: 40, importance: #HIGH, label: 'Condition Price Value' }],
+    selectionField: [{ position: 40 }],
+    fieldGroup: [{ qualifier: 'ConditionGroup', position: 20, label: 'Condition Price Value' }]
+  }
+  @EndUserText.label: 'Condition Price Value'
+  ConditionPriceValue;
+
+  @UI: {
+    lineItem: [{ position: 50, importance: #HIGH, label: 'Condition Price Currency' }],
+    selectionField: [{ position: 50 }],
+    fieldGroup: [{ qualifier: 'ConditionGroup', position: 30, label: 'Condition Price Currency' }]
+  }
+  @EndUserText.label: 'Condition Price Currency'
+  ConditionPriceCurrency;
+
+  @UI: {
+    lineItem: [{ position: 60, importance: #HIGH, label: 'GR Status', criticality: 'StatusCriticality', criticalityRepresentation: #WITH_ICON }],
+    fieldGroup: [{ qualifier: 'GeneralGroup', position: 70, label: 'GR Status', criticality: 'StatusCriticality' }],
+    dataPoint: { qualifier: 'StatusDataPoint', title: 'GR Status', criticality: 'StatusCriticality' }
+  }
+  @EndUserText.label: 'GR Status'
+  OverallStatus;
+
+  @UI.hidden: true
+  StatusCriticality;
+
+  @UI.hidden: true
+  ConditionDescription;
+
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 10, label: 'Created By' }]
+  @EndUserText.label: 'Created By'
+  CreatedBy;
+
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 20, label: 'Created At' }]
+  @EndUserText.label: 'Created At'
+  CreatedAt;
+
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 30, label: 'Last Changed By' }]
+  @EndUserText.label: 'Last Changed By'
+  LocalLastChangedBy;
+
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 40, label: 'Last Changed At' }]
+  @EndUserText.label: 'Last Changed At'
+  LocalLastChangedAt;
+
+  @UI.hidden: true
+  LastChangedAt;
+}

@@ -1,0 +1,75 @@
+managed implementation in class zbp_i_sd_zsdcdp unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZI_SD_ZSDCDP alias Coverage
+persistent table zsdtzsd
+draft table zsdtzsdd
+lock master total etag LastChangedAt
+authorization master ( global )
+etag master LocalLastChangedAt
+{
+  create;
+  update ( features : instance );
+  delete ( features : instance );
+
+  field ( readonly, numbering : managed ) CoverageUUID;
+  field ( readonly )
+    CoverageID,
+    OverallStatus,
+    StatusCriticality,
+    CreatedBy,
+    CreatedAt,
+    LocalLastChangedBy,
+    LocalLastChangedAt,
+    LastChangedAt;
+
+  field ( mandatory )
+    SalesOrder,
+    DocumentDate,
+    PostingDate,
+    ConditionCode,
+    ConditionPriceValue,
+    ConditionPriceCurrency;
+
+  action ( features : instance ) createPriceConditionAndUpdate result [1] $self;
+
+  determination setInitialStatus on modify { create; }
+  determination setDocumentNumber on save { create; }
+
+  validation validateSalesOrder on save { field SalesOrder; create; update; }
+  validation validateCondition on save { field ConditionCode, ConditionPriceValue, ConditionPriceCurrency; create; update; }
+
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+
+  draft determine action Prepare
+  {
+    validation validateSalesOrder;
+    validation validateCondition;
+  }
+
+  mapping for zsdtzsd
+  {
+    CoverageUUID           = coverage_uuid;
+    CoverageID             = coverage_id;
+    SalesOrder             = sales_order;
+    SalesOrderItem         = sales_order_item;
+    ConditionCode          = condition_code;
+    ConditionPriceValue    = condition_value;
+    ConditionPriceCurrency = condition_currency;
+    DocumentDate           = document_date;
+    PostingDate            = posting_date;
+    CustomerName           = customer_name;
+    DeliveryDocument       = delivery_document;
+    OverallStatus          = overall_status;
+    StatusCriticality      = status_criticality;
+    CreatedBy              = created_by;
+    CreatedAt              = created_at;
+    LocalLastChangedBy     = local_last_changed_by;
+    LocalLastChangedAt     = local_last_changed_at;
+    LastChangedAt          = last_changed_at;
+  }
+}

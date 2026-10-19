@@ -1,0 +1,7 @@
+@EndUserText.label: 'Coverage LME Price Service Definition'
+define service ZSD_SD_ZSDCDP_SRV {
+  expose ZC_SD_ZSDCDP       as Coverage;
+  expose ZI_SD_ZSDCDPITEM   as ConditionItem;
+  expose ZI_SD_ZSDCDPRSN_VH as ConditionCodeVH;
+  expose ZI_SD_ZSDCDP_VH    as SalesOrderVH;
+}
